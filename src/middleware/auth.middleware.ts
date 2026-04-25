@@ -4,9 +4,7 @@ import jwt from "jsonwebtoken"
 const ACCESS_SECRET = process.env.JWT_SECRET!
 
 export async function authMiddleware(request: FastifyRequest, reply: FastifyReply) {
-
   try {
-
     const authHeader = request.headers.authorization
 
     if (!authHeader) {
@@ -17,12 +15,12 @@ export async function authMiddleware(request: FastifyRequest, reply: FastifyRepl
 
     const payload = jwt.verify(token, ACCESS_SECRET) as any
 
+    // ✅ FIX HERE
     ;(request as any).user = {
-      id: payload.userId
+      id: payload.id
     }
 
   } catch (err) {
     return reply.status(401).send({ error: "Invalid token" })
   }
-
 }

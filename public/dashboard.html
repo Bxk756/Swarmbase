@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SwarmBase Dashboard</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: #0f172a;
+      color: white;
+      padding: 20px;
+    }
+
+    .card {
+      background: #1e293b;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+
+    button {
+      padding: 10px;
+      background: #3b82f6;
+      border: none;
+      color: white;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<h1>SwarmBase Dashboard</h1>
+
+<div class="card">
+  <h2>Create Target</h2>
+  <input id="domain" placeholder="example.com" />
+  <button onclick="createTarget()">Add Target</button>
+</div>
+
+<div class="card">
+  <h2>Risk Score</h2>
+  <button onclick="getRisk()">Get Risk</button>
+  <pre id="riskOutput"></pre>
+</div>
+
+<script>
+const token = localStorage.getItem("token")
+
+async function createTarget() {
+  const domain = document.getElementById("domain").value
+
+  await fetch("http://localhost:3000/targets", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + token
+    },
+    body: JSON.stringify({ domain })
+  })
+
+  alert("Target created")
+}
+
+async function getRisk() {
+  const targetId = prompt("Enter Target ID")
+
+  const res = await fetch(`http://localhost:3000/targets/${targetId}/risk`, {
+    headers: {
+      "Authorization": "Bearer " + token
+    }
+  })
+
+  const data = await res.json()
+
+  document.getElementById("riskOutput").innerText =
+    JSON.stringify(data, null, 2)
+}
+</script>
+
+</body>
+</html>
