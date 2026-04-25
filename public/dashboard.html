@@ -1,78 +1,329 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>SwarmBase Dashboard</title>
-  <style>
-    body {
-      font-family: Arial;
-      background: #0f172a;
-      color: white;
-      padding: 20px;
-    }
+<meta charset="UTF-8">
+<title>SwarmBase</title>
 
-    .card {
-      background: #1e293b;
-      padding: 20px;
-      border-radius: 10px;
-      margin-bottom: 20px;
-    }
+<style>
+body {
+  margin:0;
+  font-family: Inter, sans-serif;
+  background:#020617;
+  color:white;
+  overflow-x:hidden;
+}
 
-    button {
-      padding: 10px;
-      background: #3b82f6;
-      border: none;
-      color: white;
-      cursor: pointer;
-    }
-  </style>
+/* GLOW BACKGROUND */
+body::before {
+  content:"";
+  position:fixed;
+  width:600px;
+  height:600px;
+  background:radial-gradient(circle, #3b82f6, transparent);
+  filter:blur(120px);
+  opacity:0.15;
+  top:-100px;
+  left:-100px;
+}
+
+/* TOPBAR */
+.topbar {
+  height:60px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 20px;
+  border-bottom:1px solid #1e293b;
+  backdrop-filter: blur(10px);
+}
+
+/* LAYOUT */
+.container {
+  display:flex;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width:220px;
+  height:calc(100vh - 60px);
+  border-right:1px solid #1e293b;
+  padding:20px;
+}
+
+.sidebar button {
+  width:100%;
+  margin-bottom:10px;
+  padding:10px;
+  background:#0f172a;
+  border:none;
+  color:white;
+  cursor:pointer;
+  border-radius:6px;
+  transition:all 0.2s;
+}
+
+.sidebar button:hover {
+  background:#1e293b;
+  transform:translateX(5px);
+}
+
+/* MAIN */
+.main {
+  flex:1;
+  padding:20px;
+}
+
+/* TABLE */
+table {
+  width:100%;
+  border-collapse:collapse;
+}
+
+td, th {
+  padding:12px;
+  border-bottom:1px solid #1e293b;
+}
+
+tr {
+  transition:all 0.2s;
+}
+
+tr:hover {
+  background:#0f172a;
+  transform:scale(1.01);
+}
+
+/* BADGES */
+.badge {
+  padding:4px 8px;
+  border-radius:6px;
+  font-size:12px;
+}
+
+.active {
+  background:#16a34a;
+}
+
+.high {
+  background:#dc2626;
+}
+
+.medium {
+  background:#f59e0b;
+}
+
+/* BUTTON */
+.btn {
+  background:#3b82f6;
+  border:none;
+  padding:6px 10px;
+  color:white;
+  border-radius:5px;
+  cursor:pointer;
+  transition:all 0.2s;
+}
+
+.btn:hover {
+  background:#2563eb;
+  transform:scale(1.05);
+  box-shadow:0 0 10px #3b82f6;
+}
+
+/* CARDS */
+.cards {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:15px;
+  margin-top:20px;
+}
+
+.card {
+  background:#0f172a;
+  padding:20px;
+  border-radius:10px;
+  border:1px solid #1e293b;
+  transition:all 0.3s;
+}
+
+.card:hover {
+  transform:translateY(-5px);
+  box-shadow:0 0 20px rgba(59,130,246,0.3);
+}
+
+/* SCORE ANIMATION */
+.score {
+  font-size:40px;
+  transition:all 0.3s;
+}
+</style>
 </head>
+
 <body>
 
-<h1>SwarmBase Dashboard</h1>
-
-<div class="card">
-  <h2>Create Target</h2>
-  <input id="domain" placeholder="example.com" />
-  <button onclick="createTarget()">Add Target</button>
+<div class="topbar">
+  <img src="/logo.png" height="40">
+  <div>SwarmBase Dashboard</div>
 </div>
 
-<div class="card">
-  <h2>Risk Score</h2>
-  <button onclick="getRisk()">Get Risk</button>
-  <pre id="riskOutput"></pre>
+<div class="container">
+
+  <div class="sidebar">
+    <button onclick="loadTargets()">Refresh Targets</button>
+  </div>
+
+  <div class="main">
+
+    <h2>Targets</h2>
+    <table id="targetsTable"></table>
+
+    <div class="cards">
+      <div class="card">
+        <h3>Score</h3>
+        <div class="score" id="score">--</div>
+      </div>
+
+      <div class="card">
+        <h3>Grade</h3>
+        <div id="grade">--</div>
+      </div>
+
+      <div class="card">
+        <h3>Findings</h3>
+        <div id="count">--</div>
+      </div>
+    </div>
+
+    <h2 style="margin-top:30px;">Findings</h2>
+    <table id="findingsTable"></table>
+
+  </div>
+
 </div>
 
 <script>
 const token = localStorage.getItem("token")
+let selectedTarget = null
 
-async function createTarget() {
-  const domain = document.getElementById("domain").value
-
-  await fetch("http://localhost:3000/targets", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": "Bearer " + token
-    },
-    body: JSON.stringify({ domain })
-  })
-
-  alert("Target created")
-}
-
-async function getRisk() {
-  const targetId = prompt("Enter Target ID")
-
-  const res = await fetch(`http://localhost:3000/targets/${targetId}/risk`, {
-    headers: {
-      "Authorization": "Bearer " + token
-    }
+// LOAD TARGETS
+async function loadTargets() {
+  const res = await fetch("/targets", {
+    headers: { Authorization: "Bearer " + token }
   })
 
   const data = await res.json()
 
-  document.getElementById("riskOutput").innerText =
-    JSON.stringify(data, null, 2)
+  const table = document.getElementById("targetsTable")
+  table.innerHTML = `
+    <tr>
+      <th>Domain</th>
+      <th>Status</th>
+      <th>Action</th>
+    </tr>
+  `
+
+  data.forEach(t => {
+    const row = document.createElement("tr")
+
+    row.innerHTML = `
+      <td>${t.domain}</td>
+      <td><span class="badge active">Active</span></td>
+      <td>
+        <button class="btn" onclick="selectTarget('${t.id}')">
+          View
+        </button>
+      </td>
+    `
+
+    table.appendChild(row)
+  })
+}
+
+// SELECT TARGET
+async function selectTarget(id) {
+  selectedTarget = id
+  await loadRisk()
+  await loadFindings()
+}
+
+// LOAD RISK
+async function loadRisk() {
+  const res = await fetch(`/targets/${selectedTarget}/risk`, {
+    headers: { Authorization: "Bearer " + token }
+  })
+
+  const data = await res.json()
+
+  animateNumber("score", data.score)
+  document.getElementById("grade").innerText = data.grade
+  document.getElementById("count").innerText = data.findings
+}
+
+// NUMBER ANIMATION
+function animateNumber(id, value) {
+  let el = document.getElementById(id)
+  let start = 0
+  let end = value
+  let duration = 500
+  let step = end / (duration / 16)
+
+  let interval = setInterval(() => {
+    start += step
+    if (start >= end) {
+      start = end
+      clearInterval(interval)
+    }
+    el.innerText = Math.floor(start)
+  }, 16)
+}
+
+// LOAD FINDINGS
+async function loadFindings() {
+  const res = await fetch(`/scan/findings/${selectedTarget}`, {
+    headers: { Authorization: "Bearer " + token }
+  })
+
+  const data = await res.json()
+
+  const table = document.getElementById("findingsTable")
+  table.innerHTML = ""
+
+  data.forEach(f => {
+    const row = document.createElement("tr")
+
+    row.innerHTML = `
+      <td>${f.title}</td>
+      <td>${f.severity}</td>
+      <td>
+        <button class="btn" onclick="simulate('${f.title}')">
+          Fix
+        </button>
+      </td>
+    `
+
+    table.appendChild(row)
+  })
+}
+
+// SIMULATE FIX
+async function simulate(title) {
+  const res = await fetch(
+    `/targets/${selectedTarget}/risk/simulate`,
+    {
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json",
+        "Authorization":"Bearer "+token
+      },
+      body:JSON.stringify({
+        excludeTitles:[title]
+      })
+    }
+  )
+
+  const data = await res.json()
+
+  animateNumber("score", data.newScore)
+  document.getElementById("grade").innerText = data.newGrade
 }
 </script>
 
