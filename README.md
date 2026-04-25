@@ -1,3 +1,4 @@
+<img width="1254" height="1254" alt="swarmb" src="https://github.com/user-attachments/assets/6b2350db-1c1a-467d-892d-debf21fc9305" />
 # SwarmBase
 
 SwarmBase is a zero-trust, multi-tenant backend infrastructure platform built for Swarm Shield LLC.
