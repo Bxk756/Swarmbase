@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>Login — SwarmBase</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <style>
     body {
       margin: 0;
@@ -18,24 +20,34 @@
       background: #0f172a;
       padding: 30px;
       border-radius: 12px;
-      width: 300px;
+      width: 320px;
+      box-shadow: 0 0 30px rgba(0, 212, 255, 0.1);
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: white;
     }
 
     input {
       width: 100%;
-      padding: 10px;
+      padding: 12px;
       margin-bottom: 12px;
       border-radius: 6px;
       border: none;
+      background: #1e293b;
+      color: white;
     }
 
     button {
       width: 100%;
-      padding: 10px;
-      background: #007bff;
+      padding: 12px;
+      background: linear-gradient(135deg, #00d4ff, #007bff);
       border: none;
       border-radius: 6px;
       color: white;
+      font-weight: 600;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -55,15 +67,19 @@ async function login() {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      email: email.value,
-      password: password.value
+      email: document.getElementById("email").value,
+      password: document.getElementById("password").value
     })
   })
 
   const data = await res.json()
 
-  localStorage.setItem("token", data.accessToken)
-  window.location.href = "/dashboard.html"
+  if (data.accessToken) {
+    localStorage.setItem("token", data.accessToken)
+    window.location.href = "/dashboard"
+  } else {
+    alert("Login failed")
+  }
 }
 </script>
 
