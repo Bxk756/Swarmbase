@@ -2,20 +2,41 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>SwarmBase — AI Cybersecurity Platform</title>
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
   <style>
-    body {
+    * {
       margin: 0;
+      padding: 0;
+      box-sizing: border-box;
       font-family: "Inter", sans-serif;
-      background: radial-gradient(circle at top, #0b1a2a, #050b18);
-      color: white;
     }
 
+    body {
+      background: radial-gradient(circle at top, #0b1220, #05070d);
+      color: white;
+      overflow-x: hidden;
+    }
+
+    /* BACKGROUND GLOW */
+    .bg-glow {
+      position: absolute;
+      width: 800px;
+      height: 800px;
+      background: radial-gradient(circle, rgba(0,198,255,0.15), transparent);
+      filter: blur(120px);
+      top: -200px;
+      left: -200px;
+      z-index: 0;
+    }
+
+    /* NAVBAR */
     .nav {
+      position: relative;
+      z-index: 10;
       display: flex;
       justify-content: space-between;
       padding: 20px 40px;
@@ -23,70 +44,275 @@
     }
 
     .logo {
-      font-weight: 700;
-      font-size: 20px;
-      color: #00d4ff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo img {
+      width: 40px;
+    }
+
+    .nav-buttons a {
+      margin-left: 15px;
+      text-decoration: none;
     }
 
     .btn {
-      background: linear-gradient(135deg, #00d4ff, #007bff);
-      padding: 10px 20px;
+      padding: 10px 18px;
       border-radius: 8px;
-      text-decoration: none;
-      color: white;
-      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
     }
 
+    .btn-outline {
+      border: 1px solid #1e293b;
+      color: white;
+    }
+
+    .btn-primary {
+      background: linear-gradient(90deg, #00c6ff, #0072ff);
+      color: white;
+      border: none;
+    }
+
+    /* HERO */
     .hero {
+      position: relative;
+      z-index: 5;
       text-align: center;
-      margin-top: 120px;
+      padding: 80px 20px 40px;
     }
 
     .hero h1 {
-      font-size: 48px;
-      margin-bottom: 20px;
+      font-size: 42px;
+      font-weight: 700;
+      margin-bottom: 15px;
     }
 
     .hero p {
-      color: #aaa;
+      font-size: 16px;
+      color: #94a3b8;
       margin-bottom: 30px;
     }
 
-    .cta {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
+    .hero-buttons a {
+      margin: 10px;
+      text-decoration: none;
     }
 
-    .secondary {
-      border: 1px solid #00d4ff;
-      padding: 10px 20px;
-      border-radius: 8px;
+    /* DASHBOARD PREVIEW */
+    .preview {
+      margin-top: 40px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .dashboard {
+      width: 90%;
+      max-width: 1000px;
+      border-radius: 14px;
+      background: #020617;
+      padding: 20px;
+      box-shadow: 0 0 60px rgba(0,198,255,0.15);
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .dashboard-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .stat {
+      background: #020617;
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+      flex: 1;
+      margin: 5px;
+      border: 1px solid #1e293b;
+    }
+
+    .stat h3 {
+      color: #00c6ff;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .card {
+      background: #020617;
+      padding: 15px;
+      border-radius: 10px;
+      border: 1px solid #1e293b;
+    }
+
+    /* FEATURES */
+    .features {
+      padding: 80px 20px;
+      text-align: center;
+    }
+
+    .features h2 {
+      margin-bottom: 40px;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    .feature {
+      background: #020617;
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid #1e293b;
+      transition: 0.3s;
+    }
+
+    .feature:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 20px rgba(0,198,255,0.2);
+    }
+
+    /* CTA */
+    .cta {
+      text-align: center;
+      padding: 60px 20px;
+    }
+
+    .cta a {
       text-decoration: none;
-      color: #00d4ff;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px;
+      color: #64748b;
     }
   </style>
 </head>
 
 <body>
 
-  <div class="nav">
-    <div class="logo">SwarmBase</div>
-    <div>
-      <a href="/login" class="secondary">Login</a>
-      <a href="/dashboard.html" class="btn">Dashboard</a>
+<div class="bg-glow"></div>
+
+<!-- NAV -->
+<div class="nav">
+  <div class="logo">
+    <img src="/logo.png" />
+    <h3>SwarmBase</h3>
+  </div>
+
+  <div class="nav-buttons">
+    <a href="/login.html" class="btn btn-outline">Login</a>
+    <a href="/signup.html" class="btn btn-primary">Get Started</a>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <h1>Next-Gen Cybersecurity</h1>
+  <p>AI-powered threat detection, real-time scanning, and risk intelligence</p>
+
+  <div class="hero-buttons">
+    <a href="/signup.html" class="btn btn-primary">Start Free Trial</a>
+    <a href="/login.html" class="btn btn-outline">Login</a>
+  </div>
+
+  <!-- DASHBOARD PREVIEW -->
+  <div class="preview">
+    <div class="dashboard">
+
+      <div class="dashboard-header">
+        <div class="stat">
+          <h3>100</h3>
+          <p>Performance</p>
+        </div>
+        <div class="stat">
+          <h3>73</h3>
+          <p>Risk Score</p>
+        </div>
+        <div class="stat">
+          <h3>90</h3>
+          <p>Security</p>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <h4>Active Scans</h4>
+          <p>Monitoring targets in real-time</p>
+        </div>
+
+        <div class="card">
+          <h4>Threat Map</h4>
+          <p>Global vulnerability tracking</p>
+        </div>
+
+        <div class="card">
+          <h4>Findings</h4>
+          <p>Detected vulnerabilities and issues</p>
+        </div>
+
+        <div class="card">
+          <h4>Targets</h4>
+          <p>Assets under protection</p>
+        </div>
+      </div>
+
     </div>
   </div>
 
-  <div class="hero">
-    <h1>Next-Gen Cybersecurity<br>for a Zero-Trust World</h1>
-    <p>AI-driven threat detection, real-time scanning, and swarm intelligence</p>
+</section>
 
-    <div class="cta">
-      <a href="/login" class="btn">Get Started</a>
-      <a href="/dashboard.html" class="secondary">View Demo</a>
+<!-- FEATURES -->
+<section class="features">
+  <h2>Platform Features</h2>
+
+  <div class="feature-grid">
+
+    <div class="feature">
+      <h3>Real-Time Monitoring</h3>
+      <p>Track threats instantly across your infrastructure</p>
     </div>
+
+    <div class="feature">
+      <h3>AI Risk Engine</h3>
+      <p>Advanced scoring based on exposure & impact</p>
+    </div>
+
+    <div class="feature">
+      <h3>Vulnerability Reports</h3>
+      <p>Clear actionable insights</p>
+    </div>
+
+    <div class="feature">
+      <h3>Zero-Trust Security</h3>
+      <p>Protect every layer of your system</p>
+    </div>
+
   </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <h2>Start securing your infrastructure today</h2>
+  <br/>
+  <a href="/signup.html" class="btn btn-primary">Start Free Trial</a>
+</section>
+
+<footer>
+  © 2026 SwarmBase. All rights reserved.
+</footer>
 
 </body>
 </html>
