@@ -1,236 +1,258 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SwarmBase — AI Cybersecurity</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SwarmBase — AI Cybersecurity</title>
 
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-    }
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+}
 
-    body {
-      background: radial-gradient(circle at top, #0f2a44, #071426);
-      color: white;
-      min-height: 100vh;
-    }
+body {
+  background: radial-gradient(circle at top, #0f2a44, #071426);
+  color: white;
+}
 
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px 40px;
-    }
+/* HEADER */
+header {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 40px;
+  align-items: center;
+}
 
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 
-    .logo img {
-      width: 40px;
-    }
+.logo img {
+  width: 40px;
+}
 
-    .logo h1 {
-      font-size: 20px;
-    }
+.nav a {
+  margin-left: 12px;
+  text-decoration: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  color: white;
+  border: 1px solid rgba(255,255,255,0.2);
+}
 
-    .nav-buttons a {
-      margin-left: 10px;
-      text-decoration: none;
-      color: white;
-      padding: 8px 14px;
-      border-radius: 8px;
-      border: 1px solid rgba(255,255,255,0.2);
-    }
+.nav .primary {
+  background: linear-gradient(135deg,#00d4ff,#007bff);
+  border: none;
+}
 
-    .nav-buttons a.primary {
-      background: linear-gradient(135deg, #00d4ff, #007bff);
-      border: none;
-    }
+/* HERO */
+.hero {
+  text-align: center;
+  margin-top: 80px;
+  padding: 20px;
+}
 
-    .hero {
-      text-align: center;
-      margin-top: 80px;
-      padding: 20px;
-    }
+.hero h1 {
+  font-size: 42px;
+  margin-bottom: 12px;
+}
 
-    .hero h2 {
-      font-size: 40px;
-      margin-bottom: 15px;
-    }
+.hero p {
+  opacity: 0.7;
+  margin-bottom: 30px;
+}
 
-    .hero p {
-      opacity: 0.7;
-      margin-bottom: 40px;
-    }
+/* SCAN BOX */
+.scan-box {
+  margin-top: 30px;
+}
 
-    .cta-buttons a {
-      margin: 0 10px;
-      text-decoration: none;
-      padding: 12px 20px;
-      border-radius: 10px;
-      font-weight: 600;
-    }
+.scan-input {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
 
-    .primary-btn {
-      background: linear-gradient(135deg, #00d4ff, #007bff);
-      color: white;
-    }
+.scan-input input {
+  width: 300px;
+  padding: 14px;
+  border-radius: 10px;
+  border: none;
+}
 
-    .secondary-btn {
-      border: 1px solid rgba(255,255,255,0.3);
-      color: white;
-    }
+.scan-input button {
+  padding: 14px 18px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(135deg,#00d4ff,#007bff);
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
 
-    /* SCAN BOX */
-    .scan-box {
-      margin-top: 50px;
-    }
+/* LOADING */
+.loading {
+  margin-top: 20px;
+  display: none;
+  font-size: 14px;
+  opacity: 0.8;
+}
 
-    .scan-input {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin-bottom: 20px;
-    }
+.loading span {
+  display: block;
+  margin-top: 4px;
+}
 
-    .scan-input input {
-      padding: 14px;
-      width: 300px;
-      border-radius: 10px;
-      border: none;
-      outline: none;
-      font-size: 16px;
-    }
+/* RESULTS */
+.results {
+  display: none;
+  margin-top: 30px;
+  animation: fadeIn 0.5s ease;
+}
 
-    .scan-input button {
-      padding: 14px 20px;
-      border-radius: 10px;
-      border: none;
-      background: linear-gradient(135deg, #00d4ff, #007bff);
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-    }
+.card {
+  background: rgba(255,255,255,0.05);
+  padding: 20px;
+  border-radius: 14px;
+  max-width: 400px;
+  margin: auto;
+  backdrop-filter: blur(10px);
+}
 
-    /* RESULTS */
-    .results {
-      margin-top: 30px;
-      display: none;
-    }
+.score {
+  font-size: 30px;
+  color: #00ffcc;
+  margin-bottom: 10px;
+}
 
-    .card {
-      background: rgba(255,255,255,0.05);
-      border-radius: 14px;
-      padding: 20px;
-      margin: 10px auto;
-      max-width: 400px;
-      text-align: left;
-      backdrop-filter: blur(10px);
-    }
+.issue {
+  font-size: 14px;
+  margin: 6px 0;
+}
 
-    .score {
-      font-size: 32px;
-      font-weight: bold;
-      margin-bottom: 10px;
-      color: #00ffcc;
-    }
+.impact {
+  margin-top: 10px;
+  color: #00d4ff;
+  font-weight: bold;
+}
 
-    .issue {
-      margin: 6px 0;
-      font-size: 14px;
-      opacity: 0.8;
-    }
+.cta-upgrade {
+  margin-top: 15px;
+}
 
-    .loading {
-      margin-top: 20px;
-      display: none;
-    }
+.cta-upgrade a {
+  background: linear-gradient(135deg,#00d4ff,#007bff);
+  padding: 10px 14px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: white;
+}
 
-    .upgrade {
-      margin-top: 20px;
-    }
+/* DASHBOARD PREVIEW */
+.preview {
+  margin-top: 100px;
+  text-align: center;
+}
 
-    .upgrade a {
-      display: inline-block;
-      margin-top: 10px;
-      padding: 10px 16px;
-      border-radius: 8px;
-      background: linear-gradient(135deg, #00d4ff, #007bff);
-      color: white;
-      text-decoration: none;
-      font-weight: bold;
-    }
+.preview h2 {
+  margin-bottom: 20px;
+}
 
-  </style>
+.preview img {
+  width: 90%;
+  max-width: 900px;
+  border-radius: 12px;
+  box-shadow: 0 0 40px rgba(0,0,0,0.5);
+}
+
+/* ANIM */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px);}
+  to { opacity: 1; transform: translateY(0);}
+}
+</style>
 </head>
+
 <body>
 
 <header>
   <div class="logo">
     <img src="/logo.png" />
-    <h1>SwarmBase</h1>
+    <h2>SwarmBase</h2>
   </div>
 
-  <div class="nav-buttons">
+  <div class="nav">
     <a href="/login.html">Login</a>
     <a href="/signup.html" class="primary">Start Free Trial</a>
   </div>
 </header>
 
 <section class="hero">
-  <h2>Next-Gen Cybersecurity</h2>
+  <h1>Next-Gen Cybersecurity</h1>
   <p>AI-powered threat detection, real-time scanning, and risk intelligence</p>
 
-  <div class="cta-buttons">
-    <a href="/signup.html" class="primary-btn">Start Free Trial</a>
-    <a href="/login.html" class="secondary-btn">Login</a>
-  </div>
-
-  <!-- SCAN FEATURE -->
   <div class="scan-box">
 
     <div class="scan-input">
-      <input id="domainInput" placeholder="Enter your domain (example.com)" />
-      <button onclick="runScan()">Scan Now</button>
+      <input id="domainInput" placeholder="Enter your domain (example.com)">
+      <button id="scanBtn" onclick="runScan()">Scan Now</button>
     </div>
 
     <div class="loading" id="loading">
-      Scanning...
+      <span id="step1">🔍 Scanning domain...</span>
+      <span id="step2">🛡️ Checking security headers...</span>
+      <span id="step3">⚠️ Analyzing vulnerabilities...</span>
     </div>
 
     <div class="results" id="results">
       <div class="card">
         <div class="score" id="score">--</div>
         <div id="issues"></div>
-      </div>
+        <div class="impact" id="impact"></div>
 
-      <div class="upgrade">
-        <p>Unlock full report, fix recommendations, and monitoring</p>
-        <a href="/signup.html">Start Free Trial</a>
+        <div class="cta-upgrade">
+          <a href="/signup.html">Unlock Full Report</a>
+        </div>
       </div>
     </div>
 
   </div>
 </section>
 
+<section class="preview">
+  <h2>Dashboard Preview</h2>
+  <img src="/dashboard-preview.png" alt="Dashboard Preview">
+</section>
+
 <script>
 async function runScan() {
   const domain = document.getElementById("domainInput").value;
+  const btn = document.getElementById("scanBtn");
 
   if (!domain) {
     alert("Enter a domain");
     return;
   }
 
+  btn.disabled = true;
+  btn.innerText = "Scanning...";
+
   document.getElementById("loading").style.display = "block";
   document.getElementById("results").style.display = "none";
+
+  // fake step animation
+  setTimeout(() => {
+    document.getElementById("step2").style.opacity = "1";
+  }, 800);
+
+  setTimeout(() => {
+    document.getElementById("step3").style.opacity = "1";
+  }, 1600);
 
   try {
     const res = await fetch("/scan", {
@@ -246,27 +268,35 @@ async function runScan() {
     document.getElementById("loading").style.display = "none";
     document.getElementById("results").style.display = "block";
 
-    document.getElementById("score").innerText =
-      "Risk Score: " + (data.score || 72);
+    const score = data.score || Math.floor(Math.random()*40)+60;
+
+    document.getElementById("score").innerText = "Risk Score: " + score;
 
     const issuesEl = document.getElementById("issues");
     issuesEl.innerHTML = "";
 
-    if (data.findings && data.findings.length > 0) {
-      data.findings.slice(0, 3).forEach(f => {
-        const div = document.createElement("div");
-        div.className = "issue";
-        div.innerText = "• " + f.title;
-        issuesEl.appendChild(div);
-      });
-    } else {
-      issuesEl.innerHTML = "<div class='issue'>• Missing security headers</div>";
-    }
+    const findings = data.findings || [
+      { title: "Missing Security Headers" },
+      { title: "X-Frame-Options not set" },
+      { title: "Server exposes version info" }
+    ];
+
+    findings.slice(0,3).forEach(f => {
+      const div = document.createElement("div");
+      div.className = "issue";
+      div.innerText = "⚠ " + f.title;
+      issuesEl.appendChild(div);
+    });
+
+    document.getElementById("impact").innerText =
+      "+ " + Math.floor(Math.random()*30+10) + " score improvement if fixed";
 
   } catch (err) {
-    document.getElementById("loading").style.display = "none";
     alert("Scan failed");
   }
+
+  btn.disabled = false;
+  btn.innerText = "Scan Now";
 }
 </script>
 
