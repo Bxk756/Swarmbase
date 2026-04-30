@@ -1,87 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Login — SwarmBase</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <style>
-    body {
-      margin: 0;
-      font-family: Inter, sans-serif;
-      background: radial-gradient(circle at top, #0b1a2a, #050b18);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-
-    .card {
-      background: #0f172a;
-      padding: 30px;
-      border-radius: 12px;
-      width: 320px;
-      box-shadow: 0 0 30px rgba(0, 212, 255, 0.1);
-    }
-
-    h2 {
-      margin-bottom: 20px;
-      color: white;
-    }
-
-    input {
-      width: 100%;
-      padding: 12px;
-      margin-bottom: 12px;
-      border-radius: 6px;
-      border: none;
-      background: #1e293b;
-      color: white;
-    }
-
-    button {
-      width: 100%;
-      padding: 12px;
-      background: linear-gradient(135deg, #00d4ff, #007bff);
-      border: none;
-      border-radius: 6px;
-      color: white;
-      font-weight: 600;
-      cursor: pointer;
-    }
-  </style>
+<link rel="stylesheet" href="components.css">
 </head>
 
 <body>
 
-<div class="card">
-  <h2>Login</h2>
-  <input id="email" placeholder="Email">
-  <input id="password" type="password" placeholder="Password">
-  <button onclick="login()">Login</button>
+<div style="text-align:center;margin-top:100px;">
+<h2>Login</h2>
+<input placeholder="Email"><br><br>
+<input placeholder="Password"><br><br>
+<button class="btn">Login</button>
 </div>
-
-<script>
-async function login() {
-  const res = await fetch("/auth/login", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      email: document.getElementById("email").value,
-      password: document.getElementById("password").value
-    })
-  })
-
-  const data = await res.json()
-
-  if (data.accessToken) {
-    localStorage.setItem("token", data.accessToken)
-    window.location.href = "/dashboard"
-  } else {
-    alert("Login failed")
-  }
-}
-</script>
 
 </body>
 </html>

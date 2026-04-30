@@ -1,358 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>SwarmBase</title>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+<link rel="stylesheet" href="components.css">
 <style>
-* {
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:'Inter',sans-serif;
-}
-
-body {
-  background: radial-gradient(circle at top, #050d1f, #01040b);
-  color:white;
-  display:flex;
-  overflow:hidden;
-}
-
-/* PARTICLES */
-canvas {
-  position:fixed;
-  top:0;
-  left:0;
-  z-index:0;
-}
-
-/* SIDEBAR */
-.sidebar {
-  width:240px;
-  height:100vh;
-  backdrop-filter: blur(20px);
-  background:rgba(255,255,255,0.03);
-  border-right:1px solid rgba(255,255,255,0.06);
-  padding:20px;
-  z-index:2;
-}
-
-.logo {
-  width:150px;
-  margin-bottom:40px;
-}
-
-.nav a {
-  display:block;
-  padding:14px;
-  margin-bottom:10px;
-  border-radius:10px;
-  color:#aaa;
-  text-decoration:none;
-  transition:.3s;
-}
-
-.nav a:hover {
-  background:rgba(0,150,255,0.2);
-  color:white;
-  box-shadow:0 0 20px rgba(0,150,255,0.5);
-}
-
-/* MAIN */
 .main {
-  flex:1;
-  padding:30px;
-  overflow:auto;
-  z-index:2;
+  padding: 20px;
 }
 
-.header {
-  font-size:28px;
-  margin-bottom:25px;
-  font-weight:600;
+.stats {
+  display: flex;
+  gap: 10px;
 }
 
-/* GRID */
-.grid {
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:20px;
-}
-
-/* CARD */
 .card {
-  background:rgba(255,255,255,0.05);
-  border-radius:16px;
-  padding:20px;
-  border:1px solid rgba(255,255,255,0.08);
-  box-shadow:0 0 30px rgba(0,150,255,0.08);
-  transition:.3s;
+  background: rgba(255,255,255,0.05);
+  padding: 20px;
+  border-radius: 10px;
 }
-
-.card:hover {
-  transform:translateY(-6px);
-  box-shadow:0 0 50px rgba(0,150,255,0.25);
-}
-
-/* RISK */
-.risk-value {
-  font-size:56px;
-  color:#00c6ff;
-  text-shadow:0 0 25px rgba(0,200,255,0.7);
-}
-
-/* TARGET */
-.target {
-  padding:10px;
-  border-bottom:1px solid rgba(255,255,255,0.05);
-  cursor:pointer;
-}
-
-.target:hover {
-  color:#00c6ff;
-}
-
-/* BUTTON */
-button {
-  padding:10px;
-  border-radius:10px;
-  border:none;
-  background:linear-gradient(90deg,#007bff,#00c6ff);
-  color:white;
-  cursor:pointer;
-  transition:.3s;
-}
-
-button:hover {
-  box-shadow:0 0 20px rgba(0,150,255,0.7);
-}
-
-/* MODAL */
-.modal {
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background:rgba(0,0,0,0.7);
-  display:none;
-  align-items:center;
-  justify-content:center;
-}
-
-.modal-content {
-  background:#020617;
-  padding:30px;
-  border-radius:14px;
-  width:300px;
-}
-
-/* CHART */
-canvas.chart {
-  height:200px !important;
-}
-
 </style>
 </head>
 
 <body>
 
-<canvas id="particles"></canvas>
-
-<div class="sidebar">
-  <img src="/logo.png" class="logo"/>
-
-  <div class="nav">
-    <a href="#">Dashboard</a>
-    <a href="#">Targets</a>
-    <a href="#">Reports</a>
-    <a href="#">Scans</a>
-    <a href="#">API Keys</a>
-    <a href="#">Settings</a>
+<div class="nav">
+  <div class="logo">
+    <img src="/logo.png">
+    <strong>SwarmBase</strong>
   </div>
 
-  <button onclick="openModal()">+ Add Target</button>
+  <div>
+    <a href="/about.html">About</a>
+    <a href="/logout">Logout</a>
+  </div>
 </div>
 
 <div class="main">
 
-<div class="header">Real-Time Threat Intelligence</div>
-
-<div class="grid">
-
-<div class="card">
-  <div>Risk Score</div>
-  <div id="riskScore" class="risk-value">--</div>
-  <div id="riskGrade"></div>
-</div>
-
-<div class="card">
-  <strong>Targets</strong>
-  <div id="targets"></div>
-</div>
-
-<div class="card">
-  <strong>Threat Activity</strong>
-  <canvas id="chart" class="chart"></canvas>
-</div>
-
-<div class="card">
-  <strong>Top Vulnerabilities</strong>
-  <div id="findings"></div>
-</div>
-
-<div class="card">
-  <strong>Recommendations</strong>
-  <div id="recommendations"></div>
-</div>
-
-<div class="card">
-  <strong>Simulation</strong>
-  <button onclick="simulate()">Simulate Fix</button>
-  <div id="simulationResult"></div>
+<div class="stats">
+  <div class="card">Risk: 73</div>
+  <div class="card">Findings: 12</div>
 </div>
 
 </div>
 
+<div class="footer">
+  © 2026 Swarm Shield LLC
 </div>
-
-<!-- MODAL -->
-<div class="modal" id="modal">
-  <div class="modal-content">
-    <h3>Add Target</h3>
-    <input id="domain" placeholder="example.com"/>
-    <button onclick="addTarget()">Add</button>
-  </div>
-</div>
-
-<script>
-const token = localStorage.getItem("token")
-if (!token) location.href="/"
-
-let currentTargetId=null
-
-/* PARTICLES */
-const canvas=document.getElementById("particles")
-const ctx=canvas.getContext("2d")
-canvas.width=window.innerWidth
-canvas.height=window.innerHeight
-
-let particles=Array.from({length:80},()=>({
-  x:Math.random()*canvas.width,
-  y:Math.random()*canvas.height,
-  vx:(Math.random()-0.5)*1,
-  vy:(Math.random()-0.5)*1
-}))
-
-function draw(){
-  ctx.clearRect(0,0,canvas.width,canvas.height)
-  particles.forEach(p=>{
-    p.x+=p.vx
-    p.y+=p.vy
-
-    ctx.beginPath()
-    ctx.arc(p.x,p.y,2,0,Math.PI*2)
-    ctx.fillStyle="#00c6ff"
-    ctx.fill()
-  })
-  requestAnimationFrame(draw)
-}
-draw()
-
-/* CHART */
-const chart=new Chart(document.getElementById("chart"),{
-  type:"line",
-  data:{
-    labels:["1","2","3","4","5"],
-    datasets:[{
-      data:[20,40,35,60,50],
-      borderColor:"#00c6ff",
-      tension:0.4
-    }]
-  },
-  options:{plugins:{legend:{display:false}}}
-})
-
-/* LOAD */
-async function load(){
-  const res=await fetch("/targets",{headers:{Authorization:"Bearer "+token}})
-  const targets=await res.json()
-
-  const div=document.getElementById("targets")
-  div.innerHTML=""
-
-  targets.forEach(t=>{
-    const el=document.createElement("div")
-    el.className="target"
-    el.innerText=t.domain
-    el.onclick=()=>loadRisk(t.id)
-    div.appendChild(el)
-  })
-
-  if(targets[0]) loadRisk(targets[0].id)
-}
-
-/* RISK */
-async function loadRisk(id){
-  currentTargetId=id
-
-  const res=await fetch(`/targets/${id}/risk`,{
-    headers:{Authorization:"Bearer "+token}
-  })
-
-  const data=await res.json()
-
-  riskScore.innerText=data.score
-  riskGrade.innerText=data.grade+" - "+data.statusLabel
-
-  findings.innerHTML=""
-  data.topDrivers.forEach(f=>findings.innerHTML+=`<div>${f}</div>`)
-
-  recommendations.innerHTML=""
-  data.recommendations.forEach(r=>recommendations.innerHTML+=`<div>${r.message}</div>`)
-}
-
-/* SIM */
-async function simulate(){
-  const res=await fetch(`/targets/${currentTargetId}/risk/simulate`,{
-    method:"POST",
-    headers:{
-      "Content-Type":"application/json",
-      Authorization:"Bearer "+token
-    },
-    body:JSON.stringify({excludeTitles:["Remote Desktop exposed"]})
-  })
-
-  const d=await res.json()
-  simulationResult.innerText=`New Score: ${d.newScore}`
-}
-
-/* MODAL */
-function openModal(){ modal.style.display="flex" }
-function closeModal(){ modal.style.display="none" }
-
-async function addTarget(){
-  const domain=document.getElementById("domain").value
-
-  await fetch("/targets",{
-    method:"POST",
-    headers:{
-      "Content-Type":"application/json",
-      Authorization:"Bearer "+token
-    },
-    body:JSON.stringify({domain})
-  })
-
-  closeModal()
-  load()
-}
-
-load()
-</script>
 
 </body>
 </html>

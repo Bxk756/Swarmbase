@@ -3,15 +3,20 @@ import cookie from "@fastify/cookie"
 import path from "path"
 import fastifyStatic from "@fastify/static"
 
+// ROUTES
 import { targetsRoutes } from "./modules/targets/targets.routes"
 import { scanRoutes } from "./modules/scan/scan.routes"
 import { findingsRoutes } from "./modules/findings/findings.routes"
 import { riskRoutes } from "./modules/risk/risk.routes"
+
+// AUTH
 import { AuthController } from "./modules/auth/auth.controller"
 
 const app = Fastify({
   logger: true
 })
+
+console.log("🚀 INDEX FILE LOADED")
 
 // ------------------
 // STATIC FILES
@@ -19,11 +24,11 @@ const app = Fastify({
 
 app.register(fastifyStatic, {
   root: path.join(__dirname, "../public"),
-  prefix: "/", // important
+  prefix: "/", // serve from root
 })
 
 // ------------------
-// PAGE ROUTES (CLEAN URLS)
+// PAGE ROUTES
 // ------------------
 
 app.get("/", async (req, reply) => {
@@ -34,12 +39,28 @@ app.get("/login", async (req, reply) => {
   return reply.sendFile("login.html")
 })
 
+app.get("/signup", async (req, reply) => {
+  return reply.sendFile("signup.html")
+})
+
 app.get("/dashboard", async (req, reply) => {
   return reply.sendFile("dashboard.html")
 })
 
+app.get("/about", async (req, reply) => {
+  return reply.sendFile("about.html")
+})
+
+app.get("/privacy", async (req, reply) => {
+  return reply.sendFile("privacy.html")
+})
+
+app.get("/terms", async (req, reply) => {
+  return reply.sendFile("terms.html")
+})
+
 // ------------------
-// AUTH
+// AUTH ROUTES
 // ------------------
 
 app.post("/auth/register", AuthController.register)
@@ -61,7 +82,11 @@ app.register(riskRoutes)
 
 const start = async () => {
   try {
-    await app.listen({ port: 3000, host: "0.0.0.0" })
+    await app.listen({
+      port: 3000,
+      host: "0.0.0.0"
+    })
+
     console.log("🚀 Server running on http://localhost:3000")
   } catch (err) {
     app.log.error(err)
