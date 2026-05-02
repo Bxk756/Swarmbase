@@ -1,31 +1,168 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<link rel="stylesheet" href="components.css">
-</head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About | SwarmBase</title>
 
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #0b1e3d, #091326);
+      color: white;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 60px 20px;
+    }
+
+    h1 {
+      font-size: 42px;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      font-size: 28px;
+      margin-top: 40px;
+      margin-bottom: 15px;
+      color: #4fd1c5;
+    }
+
+    p {
+      font-size: 18px;
+      line-height: 1.7;
+      margin-bottom: 20px;
+      color: #d1d5db;
+    }
+
+    .highlight {
+      color: #4fd1c5;
+      font-weight: bold;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.05);
+      border-radius: 12px;
+      padding: 25px;
+      margin-top: 20px;
+      backdrop-filter: blur(10px);
+    }
+
+    .nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(0,0,0,0.3);
+      backdrop-filter: blur(10px);
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 15px;
+      font-weight: 500;
+    }
+
+    .btn {
+      background: linear-gradient(90deg, #4fd1c5, #3b82f6);
+      padding: 10px 18px;
+      border-radius: 8px;
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+  </style>
+</head>
 <body>
 
-<div class="nav">
-  <div class="logo">
-    <img src="/logo.png">
-    <strong>SwarmBase</strong>
+  <div class="nav">
+    <div><strong>SwarmBase</strong></div>
+    <div>
+      <a href="/">Home</a>
+      <a href="/login.html">Login</a>
+      <a href="/signup.html" class="btn">Start Free Trial</a>
+    </div>
   </div>
-</div>
 
-<div style="max-width:800px;margin:auto;padding:40px;">
-<h1>About SwarmBase</h1>
+  <div class="container">
 
-<p>
-SwarmBase is built by <strong>Swarm Shield LLC</strong>.
-We provide modern cybersecurity tools for developers and businesses.
-</p>
+    <h1>About SwarmBase</h1>
 
-</div>
+    <p>
+      <span class="highlight">SwarmBase</span> is a next-generation cybersecurity platform designed to make
+      threat detection, risk analysis, and vulnerability management simple, fast, and accessible.
+    </p>
 
-<div class="footer">
-© 2026 Swarm Shield LLC
-</div>
+    <p>
+      Our mission is to give developers, businesses, and agencies the ability to
+      <span class="highlight">scan, monitor, and secure their systems in real time</span>
+      without needing enterprise-level security teams.
+    </p>
+
+    <div class="card">
+      <h2>What We Do</h2>
+      <p>
+        SwarmBase analyzes your domain for security risks, misconfigurations, and exposure points.
+        We convert complex security data into clear, actionable insights so you know exactly what to fix.
+      </p>
+
+      <p>
+        Instead of overwhelming you with raw data, we provide:
+      </p>
+
+      <p>
+        • Risk scores you can understand<br>
+        • Prioritized vulnerabilities<br>
+        • Actionable fix recommendations<br>
+        • Continuous monitoring (Pro & above)
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>Why SwarmBase Exists</h2>
+      <p>
+        Traditional security tools are built for large enterprises — expensive, complex,
+        and difficult to use.
+      </p>
+
+      <p>
+        SwarmBase changes that by delivering
+        <span class="highlight">enterprise-level insights in a simple interface</span>
+        that anyone can use.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>Privacy First</h2>
+      <p>
+        We do <span class="highlight">NOT</span> sell your data.
+      </p>
+
+      <p>
+        We do <span class="highlight">NOT</span> share your scan results with third parties.
+      </p>
+
+      <p>
+        Your domains, findings, and security data remain private and under your control.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>Built By</h2>
+      <p>
+        SwarmBase is developed and operated by <span class="highlight">SwarmShield LLC</span>,
+        a cybersecurity-focused company dedicated to building modern, AI-powered security tools.
+      </p>
+    </div>
+
+  </div>
 
 </body>
 </html>
