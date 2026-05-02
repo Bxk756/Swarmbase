@@ -12,6 +12,12 @@ model User {
   email     String   @unique
   password  String
   name      String
+
+  // ✅ NEW: PLAN SYSTEM
+  plan      String   @default("pro") // pro | business | enterprise
+  stripeCustomerId String?          // for Stripe later
+  subscriptionStatus String?        // active, canceled, trialing
+
   createdAt DateTime @default(now())
 
   targets Target[]

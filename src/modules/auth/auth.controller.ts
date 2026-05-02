@@ -14,13 +14,8 @@ export class AuthController {
       const body = request.body as any || {}
 
       console.log("REGISTER BODY:", body)
-      console.log("PRISMA USER:", (prisma as any).user)
 
-      if (!(prisma as any).user) {
-        throw new Error("Prisma client missing 'user'")
-      }
-
-      const { email, password, name } = body
+      const { email, password, name, plan } = body
 
       if (!email || !password) {
         return reply.status(400).send({
@@ -38,17 +33,25 @@ export class AuthController {
         })
       }
 
+      // ✅ PLAN DEFAULT + VALIDATION
+      const selectedPlan = ["pro", "business", "enterprise"].includes(plan)
+        ? plan
+        : "pro"
+
       const user = await prisma.user.create({
         data: {
           email,
           password,
-          name: name || "User"
+          name: name || "User",
+          plan: selectedPlan,
+          subscriptionStatus: "active"
         }
       })
 
       return {
         id: user.id,
-        email: user.email
+        email: user.email,
+        plan: user.plan
       }
 
     } catch (err: any) {
@@ -67,11 +70,6 @@ export class AuthController {
       const body = request.body as any || {}
 
       console.log("LOGIN BODY:", body)
-      console.log("PRISMA USER:", (prisma as any).user)
-
-      if (!(prisma as any).user) {
-        throw new Error("Prisma client missing 'user'")
-      }
 
       const { email, password } = body
 
@@ -92,13 +90,17 @@ export class AuthController {
       }
 
       const token = jwt.sign(
-        { id: user.id },
+        {
+          id: user.id,
+          plan: user.plan
+        },
         "secret",
         { expiresIn: "1d" }
       )
 
       return {
-        accessToken: token
+        accessToken: token,
+        plan: user.plan
       }
 
     } catch (err: any) {

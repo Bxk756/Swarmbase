@@ -1,11 +1,14 @@
 import { FastifyInstance } from "fastify"
 import { TargetsController } from "./targets.controller"
-import { authMiddleware } from "../../middleware/auth"
+import { authMiddleware } from "../../middleware/auth.middleware"
+import { enforcePlanLimit } from "../../middleware/plan.middleware"
 
 export async function targetsRoutes(app: FastifyInstance) {
   app.post(
     "/targets",
-    { preHandler: authMiddleware },
+    {
+      preHandler: [authMiddleware, enforcePlanLimit]
+    },
     TargetsController.create
   )
 }
