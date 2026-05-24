@@ -1,17 +1,143 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<link rel="stylesheet" href="components.css">
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Login | SwarmBase</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg,#0b1e3d,#091326);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  color: white;
+}
+
+.container {
+  display: flex;
+  width: 900px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 12px;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+}
+
+.left {
+  flex: 1;
+  padding: 40px;
+  background: linear-gradient(135deg,#3b82f6,#4fd1c5);
+}
+
+.left h1 {
+  font-size: 32px;
+}
+
+.left p {
+  margin-top: 20px;
+  font-size: 16px;
+}
+
+.right {
+  flex: 1;
+  padding: 40px;
+}
+
+h2 {
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+input {
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  border: none;
+}
+
+button {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(90deg,#4fd1c5,#3b82f6);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+.link {
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+.link a {
+  color: #4fd1c5;
+  text-decoration: none;
+}
+</style>
 </head>
 
 <body>
 
-<div style="text-align:center;margin-top:100px;">
-<h2>Login</h2>
-<input placeholder="Email"><br><br>
-<input placeholder="Password"><br><br>
-<button class="btn">Login</button>
+<div class="container">
+
+  <div class="left">
+    <h1>SwarmBase</h1>
+    <p>
+      Monitor, scan, and secure your systems in one place.
+    </p>
+    <p>
+      Real-time threat detection<br>
+      Risk scoring<br>
+      AI-powered insights
+    </p>
+  </div>
+
+  <div class="right">
+    <h2>Login</h2>
+
+    <input type="email" placeholder="Email" id="email"/>
+    <input type="password" placeholder="Password" id="password"/>
+
+    <button onclick="login()">Login</button>
+
+    <div class="link">
+      Don’t have an account? <a href="/signup.html">Sign up</a>
+    </div>
+  </div>
+
 </div>
+
+<script>
+async function login() {
+  const email = document.getElementById("email").value
+  const password = document.getElementById("password").value
+
+  const res = await fetch("/auth/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password })
+  })
+
+  const data = await res.json()
+
+  if (data.accessToken) {
+    localStorage.setItem("token", data.accessToken)
+    window.location.href = "/dashboard"
+  } else {
+    alert(data.error || "Login failed")
+  }
+}
+</script>
 
 </body>
 </html>
