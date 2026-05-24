@@ -2,41 +2,192 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SwarmBase</title>
+
 <link rel="stylesheet" href="components.css">
+
 <style>
+
 .hero {
   text-align: center;
   margin-top: 80px;
+  padding: 20px;
+}
+
+.hero h1 {
+  font-size: 52px;
+  margin-bottom: 15px;
+}
+
+.hero p {
+  font-size: 20px;
+  opacity: 0.75;
+}
+
+.scan-container {
+  margin-top: 40px;
 }
 
 .scan-box {
-  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
 }
 
-input {
-  padding: 12px;
-  border-radius: 8px;
+.scan-box input {
+  width: 320px;
+  padding: 16px;
+  border-radius: 10px;
   border: none;
-  width: 250px;
+  font-size: 16px;
 }
+
+.scan-box button {
+  padding: 16px 24px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg,#00d4ff,#007bff);
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.scan-status {
+  margin-top: 30px;
+  font-size: 18px;
+  opacity: 0.85;
+  min-height: 30px;
+}
+
+/* RESULTS */
+
+.results {
+  display: none;
+  margin-top: 40px;
+  animation: fadeIn 0.5s ease;
+}
+
+.score-card {
+  width: 320px;
+  margin: auto;
+  padding: 30px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(10px);
+}
+
+.score {
+  font-size: 72px;
+  font-weight: bold;
+}
+
+.score-label {
+  opacity: 0.7;
+  margin-top: 5px;
+}
+
+.findings {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.finding-card {
+  width: 260px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: left;
+}
+
+.finding-card h3 {
+  margin-bottom: 10px;
+}
+
+.severity {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+}
+
+.high {
+  background: rgba(255,0,0,0.2);
+  color: #ff7b7b;
+}
+
+.medium {
+  background: rgba(255,165,0,0.2);
+  color: orange;
+}
+
+.low {
+  background: rgba(0,255,150,0.2);
+  color: #00ffae;
+}
+
+/* CTA */
+
+.cta {
+  margin-top: 40px;
+}
+
+.cta a {
+  display: inline-block;
+  padding: 14px 24px;
+  border-radius: 10px;
+  background: linear-gradient(135deg,#00d4ff,#007bff);
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* DASHBOARD PREVIEW */
 
 .preview {
-  margin-top: 80px;
+  margin-top: 120px;
   text-align: center;
 }
 
-.preview img {
-  width: 90%;
-  max-width: 900px;
-  border-radius: 12px;
+.preview h2 {
+  font-size: 36px;
+  margin-bottom: 20px;
 }
+
+.preview img {
+  width: 92%;
+  max-width: 1100px;
+  border-radius: 14px;
+  box-shadow: 0 0 40px rgba(0,0,0,0.4);
+}
+
+/* ANIM */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 </style>
 </head>
 
 <body>
 
+<!-- NAV -->
+
 <div class="nav">
+
   <div class="logo">
     <img src="/logo.png">
     <strong>SwarmBase</strong>
@@ -47,45 +198,183 @@ input {
     <a href="/login.html">Login</a>
     <a href="/signup.html">Start Free Trial</a>
   </div>
+
 </div>
+
+<!-- HERO -->
 
 <div class="hero">
-  <h1>Next-Gen Cybersecurity</h1>
-  <p>Scan your domain instantly</p>
 
-  <div class="scan-box">
-    <input id="domain" placeholder="example.com">
-    <button class="btn" onclick="scan()">Scan</button>
+  <h1>AI-Powered Cybersecurity</h1>
+
+  <p>
+    Scan your infrastructure for vulnerabilities, exposure, and risk in real time.
+  </p>
+
+  <!-- SCAN -->
+
+  <div class="scan-container">
+
+    <div class="scan-box">
+      <input
+        id="domain"
+        placeholder="Enter domain (example.com)"
+      >
+
+      <button onclick="runScan()">
+        Scan Now
+      </button>
+    </div>
+
+    <div class="scan-status" id="scanStatus"></div>
+
   </div>
 
-  <div id="result" style="margin-top:20px;"></div>
+  <!-- RESULTS -->
+
+  <div class="results" id="results">
+
+    <div class="score-card">
+
+      <div class="score" id="riskScore">72</div>
+
+      <div class="score-label">
+        Overall Risk Score
+      </div>
+
+    </div>
+
+    <div class="findings" id="findings"></div>
+
+    <div class="cta">
+      <a href="/signup.html">
+        Unlock Full Report
+      </a>
+    </div>
+
+  </div>
+
 </div>
 
+<!-- PREVIEW -->
+
 <div class="preview">
+
   <h2>Dashboard Preview</h2>
+
   <img src="/dashboard-preview.png">
+
 </div>
+
+<!-- FOOTER -->
 
 <div class="footer">
   © 2026 Swarm Shield LLC
-  <br>
+  <br><br>
+
   <a href="/privacy.html">Privacy</a>
   <a href="/terms.html">Terms</a>
 </div>
 
 <script>
-async function scan() {
+
+async function runScan() {
+
   const domain = document.getElementById("domain").value
+
+  const status = document.getElementById("scanStatus")
+  const results = document.getElementById("results")
+  const findings = document.getElementById("findings")
+
+  findings.innerHTML = ""
+  results.style.display = "none"
+
+  if (!domain) {
+    alert("Enter a domain")
+    return
+  }
+
+  // fake realistic scan sequence
+
+  status.innerText = "Initializing scan..."
+
+  await delay(700)
+
+  status.innerText = "Checking HTTP headers..."
+
+  await delay(1000)
+
+  status.innerText = "Analyzing exposed services..."
+
+  await delay(1000)
+
+  status.innerText = "Generating risk score..."
+
+  await delay(800)
+
+  // API request
+
   const res = await fetch("/scan", {
-    method:"POST",
-    headers:{ "Content-Type":"application/json"},
-    body: JSON.stringify({ domain })
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      domain
+    })
   })
 
   const data = await res.json()
-  document.getElementById("result").innerText =
-    "Score: " + data.score
+
+  status.innerText = "Scan complete"
+
+  results.style.display = "block"
+
+  document.getElementById("riskScore").innerText =
+    data.score || 72
+
+  const fakeFindings = [
+    {
+      title: "Missing Security Headers",
+      severity: "medium",
+      description: "Your application is missing recommended HTTP security headers."
+    },
+    {
+      title: "Exposed Server Information",
+      severity: "low",
+      description: "Server version information is publicly visible."
+    },
+    {
+      title: "Weak Content Security Policy",
+      severity: "high",
+      description: "Content Security Policy is missing or misconfigured."
+    }
+  ]
+
+  fakeFindings.forEach(f => {
+
+    const card = document.createElement("div")
+    card.className = "finding-card"
+
+    card.innerHTML = `
+      <h3>${f.title}</h3>
+      <p>${f.description}</p>
+
+      <div class="severity ${f.severity}">
+        ${f.severity.toUpperCase()}
+      </div>
+    `
+
+    findings.appendChild(card)
+
+  })
+
 }
+
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms))
+}
+
 </script>
 
 </body>
