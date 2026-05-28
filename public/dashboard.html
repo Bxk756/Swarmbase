@@ -6,312 +6,348 @@
 
 <title>SwarmBase Dashboard</title>
 
-<link rel="stylesheet" href="components.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
 }
 
-body {
+body{
   background:
-    radial-gradient(circle at top, rgba(0,123,255,0.25), transparent 40%),
-    #040b17;
+    radial-gradient(circle at top,
+    rgba(0,123,255,0.2),
+    transparent 35%),
+    #050d18;
 
-  color: white;
-  font-family: Inter, sans-serif;
-  overflow-x: hidden;
+  color:white;
+  font-family:Inter,sans-serif;
 }
 
 /* LAYOUT */
 
-.layout {
-  display: flex;
-  min-height: 100vh;
+.layout{
+  display:flex;
+  min-height:100vh;
 }
 
 /* SIDEBAR */
 
-.sidebar {
-  width: 260px;
-  background: rgba(0,0,0,0.35);
-  border-right: 1px solid rgba(255,255,255,0.08);
-  backdrop-filter: blur(18px);
-  padding: 25px;
+.sidebar{
+  width:260px;
+
+  background:
+    rgba(255,255,255,0.03);
+
+  border-right:
+    1px solid rgba(255,255,255,0.08);
+
+  backdrop-filter:blur(18px);
+
+  padding:25px;
 }
 
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 40px;
+.logo{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:40px;
 }
 
-.logo img {
-  width: 42px;
-  height: 42px;
-  border-radius: 10px;
+.logo img{
+  width:42px;
+  height:42px;
+  border-radius:12px;
 }
 
-.logo h2 {
-  font-size: 26px;
+.logo h2{
+  font-size:28px;
 }
 
-.sidebar-menu {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+.menu{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
 }
 
-.sidebar-menu a {
-  text-decoration: none;
-  color: white;
-  padding: 14px 18px;
-  border-radius: 10px;
-  transition: 0.25s;
-  opacity: 0.8;
+.menu a{
+  text-decoration:none;
+  color:white;
+  padding:14px 18px;
+  border-radius:12px;
+  opacity:0.8;
+  transition:0.25s;
 }
 
-.sidebar-menu a:hover {
-  background: rgba(0,123,255,0.2);
-  opacity: 1;
+.menu a:hover{
+  background:
+    rgba(0,123,255,0.18);
+
+  opacity:1;
 }
 
-.sidebar-menu .active {
-  background: linear-gradient(135deg,#00d4ff,#0066ff);
-  color: white;
-  opacity: 1;
+.active{
+  background:
+    linear-gradient(
+      135deg,
+      #00d4ff,
+      #0066ff
+    );
+
+  opacity:1;
 }
 
 /* MAIN */
 
-.main {
-  flex: 1;
-  padding: 30px;
+.main{
+  flex:1;
+  padding:30px;
 }
 
 /* TOPBAR */
 
-.topbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 30px;
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:30px;
 }
 
-.topbar h1 {
-  font-size: 42px;
+.topbar h1{
+  font-size:42px;
 }
 
-.plan {
-  padding: 10px 18px;
-  border-radius: 30px;
-  background: linear-gradient(135deg,#00d4ff,#0066ff);
-  font-size: 14px;
+.plan{
+  background:
+    linear-gradient(
+      135deg,
+      #00d4ff,
+      #0066ff
+    );
+
+  padding:10px 18px;
+  border-radius:30px;
+  font-size:14px;
 }
 
-/* GRID */
+/* METRICS */
 
-.metrics {
-  display: grid;
-  grid-template-columns: repeat(auto-fit,minmax(240px,1fr));
-  gap: 20px;
-  margin-bottom: 30px;
+.metrics{
+  display:grid;
+  grid-template-columns:
+    repeat(auto-fit,minmax(240px,1fr));
+
+  gap:20px;
+  margin-bottom:25px;
 }
 
-/* CARDS */
+.card{
+  background:
+    rgba(255,255,255,0.04);
 
-.card {
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 18px;
-  padding: 24px;
-  backdrop-filter: blur(18px);
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  border-radius:18px;
+
+  padding:24px;
+
+  backdrop-filter:blur(18px);
 
   box-shadow:
     0 0 30px rgba(0,123,255,0.12);
 }
 
-.card h3 {
-  opacity: 0.7;
-  margin-bottom: 10px;
+.card h3{
+  opacity:0.7;
+  margin-bottom:10px;
 }
 
-.metric {
-  font-size: 42px;
-  font-weight: bold;
+.metric{
+  font-size:44px;
+  font-weight:bold;
 }
 
-/* MAIN GRID */
+/* CONTENT GRID */
 
-.content-grid {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 24px;
+.content{
+  display:grid;
+  grid-template-columns:2fr 1fr;
+  gap:24px;
+  margin-top:20px;
+}
+
+/* CHARTS */
+
+.chart-card{
+  height:340px;
+}
+
+canvas{
+  margin-top:20px;
+}
+
+/* FINDINGS */
+
+.findings{
+  display:flex;
+  flex-direction:column;
+  gap:15px;
+}
+
+.finding{
+  background:
+    rgba(255,255,255,0.04);
+
+  border-radius:12px;
+  padding:18px;
+}
+
+.finding-top{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:10px;
+}
+
+.severity{
+  padding:5px 10px;
+  border-radius:6px;
+  font-size:12px;
+}
+
+.high{
+  background:rgba(255,0,0,0.2);
+  color:#ff7b7b;
+}
+
+.medium{
+  background:rgba(255,165,0,0.2);
+  color:orange;
+}
+
+.low{
+  background:rgba(0,255,150,0.2);
+  color:#00ffae;
+}
+
+/* ACTIVITY */
+
+.activity{
+  margin-top:24px;
+}
+
+.activity-item{
+  padding:14px;
+  border-radius:10px;
+  background:
+    rgba(255,255,255,0.04);
+
+  margin-top:10px;
 }
 
 /* THREAT MAP */
 
-.threat-map {
-  height: 420px;
-  position: relative;
-  overflow: hidden;
+.map{
+  position:relative;
+  height:320px;
+  overflow:hidden;
 }
 
-.threat-map::before {
-  content: "";
-  position: absolute;
-  inset: 0;
+.map::before{
+  content:"";
+  position:absolute;
+  inset:0;
 
   background:
-    radial-gradient(circle,#00d4ff 2px,transparent 2px);
+    radial-gradient(
+      circle,
+      #00d4ff 2px,
+      transparent 2px
+    );
 
-  background-size: 80px 80px;
-  opacity: 0.15;
+  background-size:80px 80px;
+  opacity:0.1;
 }
 
-.map-center {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 140px;
-  height: 140px;
-  transform: translate(-50%,-50%);
-  border-radius: 50%;
+.center-node{
+  position:absolute;
+  top:50%;
+  left:50%;
+
+  width:140px;
+  height:140px;
+
+  transform:translate(-50%,-50%);
+
+  border-radius:50%;
 
   background:
-    radial-gradient(circle,#00d4ff,transparent);
+    radial-gradient(
+      circle,
+      #00d4ff,
+      transparent
+    );
 
   box-shadow:
     0 0 60px #00d4ff;
 }
 
-.node {
-  position: absolute;
-  width: 12px;
-  height: 12px;
-  background: #00d4ff;
-  border-radius: 50%;
-  box-shadow: 0 0 20px #00d4ff;
-  animation: pulse 2s infinite;
+.node{
+  position:absolute;
+
+  width:12px;
+  height:12px;
+
+  background:#00d4ff;
+
+  border-radius:50%;
+
+  box-shadow:
+    0 0 20px #00d4ff;
+
+  animation:pulse 2s infinite;
 }
 
-.node:nth-child(1) {
-  top: 20%;
-  left: 30%;
+.node:nth-child(2){
+  top:20%;
+  left:25%;
 }
 
-.node:nth-child(2) {
-  top: 65%;
-  left: 70%;
+.node:nth-child(3){
+  top:70%;
+  left:70%;
 }
 
-.node:nth-child(3) {
-  top: 35%;
-  left: 80%;
+.node:nth-child(4){
+  top:30%;
+  left:80%;
 }
 
-.node:nth-child(4) {
-  top: 75%;
-  left: 25%;
+.node:nth-child(5){
+  top:75%;
+  left:20%;
 }
 
-/* FINDINGS */
+/* ANIM */
 
-.findings-list {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
+@keyframes pulse{
 
-.finding {
-  background: rgba(255,255,255,0.04);
-  border-radius: 12px;
-  padding: 18px;
-}
-
-.finding-top {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
-}
-
-.severity {
-  padding: 5px 10px;
-  border-radius: 6px;
-  font-size: 12px;
-}
-
-.high {
-  background: rgba(255,0,0,0.2);
-  color: #ff7b7b;
-}
-
-.medium {
-  background: rgba(255,165,0,0.2);
-  color: orange;
-}
-
-.low {
-  background: rgba(0,255,150,0.2);
-  color: #00ffae;
-}
-
-/* TARGETS */
-
-.targets {
-  margin-top: 30px;
-}
-
-.target-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-}
-
-.target-table th,
-.target-table td {
-  padding: 16px;
-  text-align: left;
-}
-
-.target-table tr {
-  border-bottom: 1px solid rgba(255,255,255,0.08);
-}
-
-/* BUTTON */
-
-.btn {
-  display: inline-block;
-  padding: 12px 18px;
-  border-radius: 10px;
-  background: linear-gradient(135deg,#00d4ff,#0066ff);
-  text-decoration: none;
-  color: white;
-  border: none;
-  cursor: pointer;
-}
-
-/* ANIMATION */
-
-@keyframes pulse {
-
-  0% {
-    transform: scale(1);
-    opacity: 0.7;
+  0%{
+    transform:scale(1);
+    opacity:0.6;
   }
 
-  50% {
-    transform: scale(1.4);
-    opacity: 1;
+  50%{
+    transform:scale(1.5);
+    opacity:1;
   }
 
-  100% {
-    transform: scale(1);
-    opacity: 0.7;
+  100%{
+    transform:scale(1);
+    opacity:0.6;
   }
 
 }
@@ -320,12 +356,12 @@ body {
 
 @media(max-width:1000px){
 
-  .content-grid {
-    grid-template-columns: 1fr;
+  .content{
+    grid-template-columns:1fr;
   }
 
-  .sidebar {
-    display: none;
+  .sidebar{
+    display:none;
   }
 
 }
@@ -346,7 +382,7 @@ body {
       <h2>SwarmBase</h2>
     </div>
 
-    <div class="sidebar-menu">
+    <div class="menu">
 
       <a class="active" href="#">
         Dashboard
@@ -361,15 +397,11 @@ body {
       </a>
 
       <a href="#">
-        Scan History
+        Threat Intel
       </a>
 
       <a href="#">
         Reports
-      </a>
-
-      <a href="#">
-        API Keys
       </a>
 
       <a href="#">
@@ -392,9 +424,9 @@ body {
 
     <div class="topbar">
 
-      <div>
-        <h1>Cyber Dashboard</h1>
-      </div>
+      <h1>
+        Cyber Intelligence Dashboard
+      </h1>
 
       <div class="plan">
         PRO PLAN
@@ -407,105 +439,81 @@ body {
     <div class="metrics">
 
       <div class="card">
+
         <h3>Risk Score</h3>
-        <div class="metric">
-          72
+
+        <div class="metric" id="riskScore">
+          --
         </div>
+
       </div>
 
       <div class="card">
-        <h3>Active Findings</h3>
-        <div class="metric">
-          12
+
+        <h3>Open Findings</h3>
+
+        <div class="metric" id="openFindings">
+          --
         </div>
+
       </div>
 
       <div class="card">
-        <h3>Protected Domains</h3>
-        <div class="metric">
-          3
+
+        <h3>Resolved Findings</h3>
+
+        <div class="metric" id="resolvedFindings">
+          --
         </div>
+
       </div>
 
       <div class="card">
-        <h3>Active Scans</h3>
-        <div class="metric">
-          4
+
+        <h3>Protected Targets</h3>
+
+        <div class="metric" id="targets">
+          --
         </div>
+
       </div>
 
     </div>
 
-    <!-- MAIN CONTENT -->
+    <!-- CONTENT -->
 
-    <div class="content-grid">
+    <div class="content">
 
       <!-- LEFT -->
 
       <div>
 
-        <!-- THREAT MAP -->
+        <!-- TREND CHART -->
 
-        <div class="card threat-map">
+        <div class="card chart-card">
 
           <h2>
-            Real-Time Threat Map
+            Risk Trend
           </h2>
 
-          <div class="map-center"></div>
-
-          <div class="node"></div>
-          <div class="node"></div>
-          <div class="node"></div>
-          <div class="node"></div>
+          <canvas id="riskChart"></canvas>
 
         </div>
 
-        <!-- TARGETS -->
+        <!-- THREAT MAP -->
 
-        <div class="card targets">
+        <div class="card map" style="margin-top:24px;">
 
-          <div style="
-            display:flex;
-            justify-content:space-between;
-            align-items:center;
-          ">
+          <h2>
+            Live Threat Activity
+          </h2>
 
-            <h2>Target List</h2>
+          <div class="center-node"></div>
 
-            <button class="btn">
-              Add Target
-            </button>
-
-          </div>
-
-          <table class="target-table">
-
-            <tr>
-              <th>Domain</th>
-              <th>Status</th>
-              <th>Risk</th>
-            </tr>
-
-            <tr>
-              <td>example.com</td>
-              <td>Monitoring</td>
-              <td style="color:orange;">Medium</td>
-            </tr>
-
-            <tr>
-              <td>api.example.com</td>
-              <td>Scanning</td>
-              <td style="color:#ff7b7b;">High</td>
-            </tr>
-
-            <tr>
-              <td>portal.example.com</td>
-              <td>Protected</td>
-              <td style="color:#00ffae;">Low</td>
-            </tr>
-
-          </table>
+          <div class="node"></div>
+          <div class="node"></div>
+          <div class="node"></div>
+          <div class="node"></div>
 
         </div>
 
@@ -515,109 +523,27 @@ body {
 
       <div>
 
+        <!-- SEVERITY -->
+
         <div class="card">
 
-          <h2 style="margin-bottom:20px;">
-            Recent Findings
+          <h2>
+            Severity Breakdown
           </h2>
 
-          <div class="findings-list">
-
-            <div class="finding">
-
-              <div class="finding-top">
-
-                <strong>
-                  Missing CSP Header
-                </strong>
-
-                <div class="severity high">
-                  HIGH
-                </div>
-
-              </div>
-
-              <p>
-                Content Security Policy missing from application.
-              </p>
-
-            </div>
-
-            <div class="finding">
-
-              <div class="finding-top">
-
-                <strong>
-                  Exposed SSH Port
-                </strong>
-
-                <div class="severity medium">
-                  MEDIUM
-                </div>
-
-              </div>
-
-              <p>
-                SSH service publicly accessible.
-              </p>
-
-            </div>
-
-            <div class="finding">
-
-              <div class="finding-top">
-
-                <strong>
-                  Weak Security Headers
-                </strong>
-
-                <div class="severity low">
-                  LOW
-                </div>
-
-              </div>
-
-              <p>
-                Some HTTP headers are not configured.
-              </p>
-
-            </div>
-
-          </div>
+          <canvas id="severityChart"></canvas>
 
         </div>
 
-        <!-- ACTIVITY -->
+        <!-- RECENT FINDINGS -->
 
-        <div class="card" style="margin-top:24px;">
+        <div class="card activity">
 
-          <h2 style="margin-bottom:20px;">
-            Live Activity
+          <h2>
+            Recent Findings
           </h2>
 
-          <div style="
-            display:flex;
-            flex-direction:column;
-            gap:14px;
-          ">
-
-            <div>
-              ✓ Scan completed for example.com
-            </div>
-
-            <div>
-              ✓ 3 new findings detected
-            </div>
-
-            <div>
-              ✓ Risk score updated 81 → 72
-            </div>
-
-            <div>
-              ✓ API endpoint analyzed
-            </div>
-
-          </div>
+          <div id="findings"></div>
 
         </div>
 
@@ -628,6 +554,185 @@ body {
   </div>
 
 </div>
+
+<script>
+
+const token = localStorage.getItem("token")
+
+async function loadDashboard(){
+
+  try{
+
+    const res = await fetch(
+      "/risk/intelligence",
+      {
+        headers:{
+          Authorization:
+            "Bearer " + token
+        }
+      }
+    )
+
+    const data = await res.json()
+
+    // METRICS
+
+    document.getElementById("riskScore")
+      .innerText = data.riskScore
+
+    document.getElementById("openFindings")
+      .innerText = data.openFindings
+
+    document.getElementById("resolvedFindings")
+      .innerText = data.resolvedFindings
+
+    document.getElementById("targets")
+      .innerText = data.targets
+
+    // FINDINGS
+
+    const findingsDiv =
+      document.getElementById("findings")
+
+    findingsDiv.innerHTML = ""
+
+    data.recentFindings.forEach(f => {
+
+      const div =
+        document.createElement("div")
+
+      div.className = "activity-item"
+
+      div.innerHTML = `
+        <div class="finding-top">
+
+          <strong>
+            ${f.title}
+          </strong>
+
+          <div class="
+            severity
+            ${f.severity}
+          ">
+            ${f.severity.toUpperCase()}
+          </div>
+
+        </div>
+
+        <div style="
+          opacity:0.7;
+          margin-top:8px;
+        ">
+          ${f.description}
+        </div>
+      `
+
+      findingsDiv.appendChild(div)
+
+    })
+
+    // RISK CHART
+
+    new Chart(
+      document.getElementById("riskChart"),
+      {
+
+        type:"line",
+
+        data:{
+
+          labels:[
+            "Mon",
+            "Tue",
+            "Wed",
+            "Thu",
+            "Fri",
+            "Sat",
+            "Sun"
+          ],
+
+          datasets:[{
+
+            label:"Risk Score",
+
+            data:[
+              91,
+              84,
+              82,
+              78,
+              75,
+              73,
+              data.riskScore
+            ],
+
+            borderColor:"#00d4ff",
+
+            backgroundColor:
+              "rgba(0,212,255,0.15)",
+
+            fill:true,
+
+            tension:0.4
+
+          }]
+
+        }
+
+      }
+    )
+
+    // SEVERITY CHART
+
+    new Chart(
+      document.getElementById("severityChart"),
+      {
+
+        type:"doughnut",
+
+        data:{
+
+          labels:[
+            "High",
+            "Medium",
+            "Low"
+          ],
+
+          datasets:[{
+
+            data:[
+
+              data.severityBreakdown.high,
+
+              data.severityBreakdown.medium,
+
+              data.severityBreakdown.low
+
+            ],
+
+            backgroundColor:[
+              "#ff4d4d",
+              "#ffaa00",
+              "#00ffaa"
+            ]
+
+          }]
+
+        }
+
+      }
+    )
+
+  }catch(err){
+
+    console.error(err)
+
+  }
+
+}
+
+loadDashboard()
+
+</script>
 
 </body>
 </html>
