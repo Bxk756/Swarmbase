@@ -5,45 +5,124 @@ console.log("✅ RISK CONTROLLER LOADED")
 
 export class RiskController {
 
-  static async getRisk(request: FastifyRequest, reply: FastifyReply) {
+  // =========================================
+  // CURRENT TARGET RISK
+  // =========================================
+
+  static async getRisk(
+    request: FastifyRequest,
+    reply: FastifyReply
+  ) {
+
     try {
+
       const { targetId } = request.params as any
+
       const user = (request as any).user
 
-      const result = await RiskService.calculateRisk(
-        targetId,
-        user.id
-      )
+      const result =
+        await RiskService.calculateRisk(
+          targetId,
+          user.id
+        )
 
       return reply.send(result)
+
     } catch (err: any) {
+
       console.error("Risk error:", err)
-      return reply.status(500).send({ error: err.message })
+
+      return reply
+        .status(500)
+        .send({
+          error: err.message
+        })
+
     }
+
   }
 
-  static async simulate(request: FastifyRequest, reply: FastifyReply) {
+  // =========================================
+  // RISK SIMULATION
+  // =========================================
+
+  static async simulate(
+    request: FastifyRequest,
+    reply: FastifyReply
+  ) {
+
     try {
+
       console.log("🔥 SIMULATE ENDPOINT HIT")
 
       const { targetId } = request.params as any
+
       const user = (request as any).user
+
       const body = request.body as any || {}
 
-      const excludeTitles = Array.isArray(body.excludeTitles)
-        ? body.excludeTitles
-        : []
+      const excludeTitles =
+        Array.isArray(body.excludeTitles)
+          ? body.excludeTitles
+          : []
 
-      const result = await RiskService.simulate(
-        targetId,
-        user.id,
-        excludeTitles
-      )
+      const result =
+        await RiskService.simulate(
+          targetId,
+          user.id,
+          excludeTitles
+        )
 
       return reply.send(result)
+
     } catch (err: any) {
+
       console.error("Simulation error:", err)
-      return reply.status(500).send({ error: err.message })
+
+      return reply
+        .status(500)
+        .send({
+          error: err.message
+        })
+
     }
+
   }
+
+  // =========================================
+  // DASHBOARD INTELLIGENCE
+  // =========================================
+
+  static async intelligence(
+    request: FastifyRequest,
+    reply: FastifyReply
+  ) {
+
+    try {
+
+      console.log("🛡️ INTELLIGENCE ENDPOINT HIT")
+
+      const user = (request as any).user
+
+      const result =
+        await RiskService.getDashboardIntelligence(
+          user.id
+        )
+
+      return reply.send(result)
+
+    } catch (err: any) {
+
+      console.error("Intelligence error:", err)
+
+      return reply
+        .status(500)
+        .send({
+          error: err.message
+        })
+
+    }
+
+  }
+
 }
