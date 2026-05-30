@@ -25,7 +25,7 @@ export class FindingsEngine {
 
       if (result.type === "http") {
 
-        const headers = result.data.headers || {}
+        const headers = (result.data as any)?.headers || {}
 
         // HSTS
 
@@ -85,7 +85,7 @@ export class FindingsEngine {
 
       if (result.type === "ports") {
 
-        const ports = result.data.openPorts || []
+        const ports = (result.data as any)?.openPorts || []
 
         // RDP
 
@@ -184,7 +184,7 @@ export class FindingsEngine {
 
     for (const f of findings) {
 
-      const existing = await prisma.findFirst({
+      const existing = await prisma.finding.findFirst({
 
         where: {
           targetId: scan.targetId,

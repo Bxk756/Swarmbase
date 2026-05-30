@@ -8,6 +8,7 @@ import { targetsRoutes } from "./modules/targets/targets.routes"
 import { scanRoutes } from "./modules/scan/scan.routes"
 import { findingsRoutes } from "./modules/findings/findings.routes"
 import { riskRoutes } from "./modules/risk/risk.routes"
+import { dashboardRoutes } from "./modules/dashboard/dashboard.routes"
 
 // AUTH
 import { AuthController } from "./modules/auth/auth.controller"
@@ -24,7 +25,7 @@ console.log("🚀 INDEX FILE LOADED")
 
 app.register(fastifyStatic, {
   root: path.join(__dirname, "../public"),
-  prefix: "/", // serve from root
+  prefix: "/",
 })
 
 // ------------------
@@ -75,6 +76,18 @@ app.register(targetsRoutes)
 app.register(scanRoutes)
 app.register(findingsRoutes)
 app.register(riskRoutes)
+app.register(dashboardRoutes)
+
+// ------------------
+// HEALTH CHECK
+// ------------------
+
+app.get("/health", async () => {
+  return {
+    status: "ok",
+    service: "SwarmBase API"
+  }
+})
 
 // ------------------
 // START SERVER
@@ -82,15 +95,19 @@ app.register(riskRoutes)
 
 const start = async () => {
   try {
+
     await app.listen({
       port: 3000,
       host: "0.0.0.0"
     })
 
     console.log("🚀 Server running on http://localhost:3000")
+
   } catch (err) {
+
     app.log.error(err)
     process.exit(1)
+
   }
 }
 
